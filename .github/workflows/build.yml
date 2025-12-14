@@ -1,31 +1,33 @@
-name: Build TsMap.Canvas
+name: Build TsMap
 
 on:
   push:
-    branches: [ master ]
-  workflow_dispatch: # 允许手动触发
+    branches: [ "master", "develop", "main" ]
+  pull_request:
+    branches: [ "master", "develop", "main" ]
+  workflow_dispatch: # 允许手动点击按钮触发
 
 jobs:
   build:
-    runs-on: windows-latest # 必须使用 Windows 运行器来编译 .NET Framework
+    runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0 # 检出代码
-
+    - uses: actions/checkout@v3
+    
     - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v2 # 设置 MSBuild 环境
-
-    - name: Restore NuGet packages
-      run: nuget restore TsMap.sln # 恢复项目依赖
-
+      uses: microsoft/setup-msbuild@v1.1
+      
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.5
+      
+    - name: Restore NuGet Packages
+      run: nuget restore TsMap.sln
+      
     - name: Build Solution
-      run: msbuild TsMap.sln /p:Configuration=Release /p:Platform="Any CPU" # 编译解决方案
-
+      run: msbuild TsMap.sln /p:Configuration=Release /p:Platform=x64
+      
     - name: Upload Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
-        name: TsMap-Release-Build
-        # 编译后的可执行文件和依赖文件位于 TsMap.Canvas/bin/Release 目录下
-        path: TsMap.Canvas/bin/Release
+        name: TsMap-Build
+        path: TsMap.Canvas/bin/x64/Release/
