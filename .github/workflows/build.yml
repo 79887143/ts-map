@@ -5,14 +5,14 @@ on:
     branches: [ "master", "develop", "main" ]
   pull_request:
     branches: [ "master", "develop", "main" ]
-  workflow_dispatch: # 允许手动点击按钮触发
+  workflow_dispatch: # 允许手动触发
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4  # 升级到 v4
     
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1.1
@@ -27,7 +27,7 @@ jobs:
       run: msbuild TsMap.sln /p:Configuration=Release /p:Platform=x64
       
     - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4  # 关键修复：升级到 v4
       with:
         name: TsMap-Build
         path: TsMap.Canvas/bin/x64/Release/
