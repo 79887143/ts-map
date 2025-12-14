@@ -6,7 +6,7 @@ namespace TsMap.Canvas
     {
         public SimpleMapPalette()
         {
-            Background = new SolidBrush(Color.FromArgb(72, 78, 102));
+            Background = new SolidBrush(Color.Transparent);
             Road = Brushes.White;
             PrefabRoad = Brushes.White;
             PrefabLight = new SolidBrush(Color.FromArgb(236, 203, 153));
